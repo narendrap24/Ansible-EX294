@@ -1,0 +1,20 @@
+- name: plabook for modifying issue file
+  hosts: all
+  tasks:
+    - name: task for dev
+      copy:
+        content: "Devlopment"
+        dest: /etc/issue
+      when: inventory_hostname in groups['dev']
+
+    - name: Task for test
+      copy:
+        content: "Test"
+        dest: /etc/issue
+      when: inventory_hostname in groups['test']
+
+    - name: task for prod
+      copy:
+        content: "Production"
+        dest: /etc/issue
+      when: inventory_hostname in groups['prod']

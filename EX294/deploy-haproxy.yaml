@@ -1,0 +1,10 @@
+- name: Deploying haproxy role on balancer host
+  hosts: balancer
+  roles:
+     - balancer
+
+- name: Deploying phpinfo role on webserver host
+  hosts: webserver
+  roles:
+     - phphello
+

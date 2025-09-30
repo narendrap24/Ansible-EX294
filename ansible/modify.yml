@@ -1,0 +1,19 @@
+- name: Play to Edit entries in /etc/issue file
+  hosts: all
+  tasks:
+    - name: task dev group
+      copy:
+        content: Developers
+        dest: /etc/issue
+      when: inventory_hostname in groups['dev']
+    - name: task test group
+      copy:
+        content: Testers
+        dest: /etc/issue
+      when: inventory_hostname in groups['test']
+    - name: task dev group
+      copy:
+        content: Producers
+        dest: /etc/issue
+      when: inventory_hostname in groups['prod']
+

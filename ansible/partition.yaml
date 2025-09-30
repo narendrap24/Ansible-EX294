@@ -1,0 +1,49 @@
+- name: partition
+  hosts: all
+  tasks:
+    - name: check block storage availability
+      block:
+        - name: If vdb does not exist, a msg will be prompted
+          debug: 
+            msg: 'this disk does not exist'
+          when: "'vdb' not in ansible_devices"
+        - name: Creating a 1200m partition
+          parted:
+            device: /dev/vdb
+            number: 1
+            part_end: 1200MiB
+            state: present
+          when: "'vdb' in ansible_devices"
+      rescue:
+        - name: If no enough space available on the disk then prompt the message
+          debug: 
+            msg: 'could not create partition of that size'
+        - name: Creating a 800m partition
+          parted:
+            device: /dev/vdb
+            number: 1
+            part_end: 800MiB
+            state: present
+      always:
+        - name: Creating a filesystem
+          filesystem:
+            fstype: ext4
+            dev: /dev/vdb1
+          when: 
+           - "'vdb' in ansible_devices"
+           - "'vdb1' in ansible_devices.vdb.partitions"
+
+        - name: mounting the filesystem
+          mount:
+            path: /srv
+            src: /dev/vdb1
+            fstype: ext4
+            state: mounted
+          when: 
+           - "'prod' in group_names"
+           - "'vdb' in ansible_devices"
+           - "'vdb1' in ansible_devices.vdb.partitions"
+  
+
+
+               

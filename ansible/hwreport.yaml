@@ -1,0 +1,37 @@
+- name: Creating a Hw report for the hosts
+  hosts: all
+  tasks:
+    - name: creating a report a from jinja template
+      template:
+        src: ~/ansible/hwreport.j2
+        dest: /root/hwreport.txt
+
+    - name: Getting a hostname entry
+      lineinfile:
+        path: /root/hwreport.txt
+        regexp: '^Hostname'
+        line: 'Hostname: {{ ansible_hostname | default("NONE") }}'
+    - name: Getting a Biosversion entry
+      lineinfile:
+        path: /root/hwreport.txt
+        regexp: '^Biosversion'
+        line: 'Biosversion: {{ ansible_bios_version | default("NONE") }}'
+    - name: Getting a Memory entry
+      lineinfile:
+        path: /root/hwreport.txt
+        regexp: '^Memory'
+        line: 'Memory: {{ ansible_memtotal_mb | default("NONE") }}MB'
+    - name: Getting a Vda disk size
+      lineinfile:
+        path: /root/hwreport.txt
+        regexp: '^Vda'
+        line: 'Vda: {{ ansible_devices.nvme0n1.partitions.nvme0n1p4.size | default("NONE") }}'
+    - name: Getting a Vdb disk size
+      lineinfile:
+        path: /root/hwreport.txt
+        regexp: '^Vdb'
+        line: 'Vdb: {{ ansible_devices.nvme0n1p4 | default("NONE") }}'
+
+
+
+      

@@ -1,0 +1,22 @@
+- yum: 
+    name: "{{ item }}"
+    state: present
+  loop: "{{ pkg }}"
+
+- name: creating a index. html file from a ansible Jinja2 template
+  template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+- name: Starting and enabling the serices
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop: "{{ pkg }}"
+- name: Configuring the firewall for the services
+  firewalld:
+    service: "{{ item }}"
+    state: enabled
+    permanent: true
+    immediate: true
+  loop: "{{ rule }}"

@@ -1,0 +1,4 @@
+- name: Installing Squid role on Balancers group
+  hosts: balancers
+  roles: 
+     - ~/ansible/roles/squid

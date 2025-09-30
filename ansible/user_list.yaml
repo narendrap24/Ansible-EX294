@@ -1,0 +1,10 @@
+users:
+  - name: sara
+    job: developer
+    uid: 3006
+  - name: sachin
+    job: manager
+    uid: 3004
+  - name: sagar
+    job: developer
+    uid: 3005

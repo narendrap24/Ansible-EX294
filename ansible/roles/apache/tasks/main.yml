@@ -1,0 +1,22 @@
+- name: Installing the packages
+  yum: 
+    name: '{{ item }}'
+    state: present
+  loop: '{{ pkg }}'
+- name: Creating a file by a jinja template
+  ansible.builtin.template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+- name: Starting the services
+  service:  
+    name: '{{ item }}'
+    state: started
+    enabled: true
+  loop: '{{ pkg }}'
+- name: Adding services in firewalld
+  ansible.posix.firewalld:
+    service: '{{ item }}'
+    state: enabled
+    permanent: true
+    immediate: true
+  loop: '{{ rule }}'

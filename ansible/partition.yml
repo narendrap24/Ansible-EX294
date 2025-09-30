@@ -1,0 +1,44 @@
+- name: Disk Partition Playbook
+  hosts: all
+  tasks:
+    - name: Checking the status
+      block:
+        - name: If vdb does not exist then the error message will be prompted
+          debug:
+            msg: "Devices is not present"
+          when: "'vdb' not in ansible_devices"
+        - name: creating a partion of size 1500m
+          parted:
+            device: /dev/vdb
+            number: 1
+            state: present
+            part_end: 1500MiB
+          when: "'vdb' in ansible_devices"
+      rescue:
+        - name: If vdb connot be created then the error message will be prompted
+          debug:
+            msg: "Requested size is not present"
+        - name: creating a partion of size 1500m
+          parted:
+            device: /dev/vdb
+            number: 1
+            state: present
+            part_end: 800MiB
+      always:
+        - name: Creating a filesystem for /dev/vdb1
+          filesystem:
+            fstype: ext4
+            dev: /dev/vdb1
+          when: 
+            - "'vdb' in ansible_devices"
+            - "'vdb1' in ansible_devices.vdb.partitions"
+        - name: Mouting the filesystem on the /mount
+          mount:
+            path: /mount
+            src: /dev/vdb1
+            fstype: ext4
+            state: mounted
+          when: 
+            - "'vdb' in ansible_devices"
+            - "'vdb1' in ansible_devices.vdb.partitions"
+

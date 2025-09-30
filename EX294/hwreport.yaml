@@ -1,0 +1,43 @@
+- name: Playbook for hwreport.txt
+  hosts: all
+  tasks:
+
+    #- name: Download the hwreport.txt file
+     # get_url:
+      #  url: http://content.example.com/hwreport.txt
+       # dest: /root/hwreport.txt
+    - name: Setting hw report template
+      template:
+        src: /home/john/ansible/hwreport.j2
+        dest: /root/hwreport.txt 
+
+    - name: Set hostname value
+      lineinfile:
+        path: /root/hwreport.txt
+        regexp: '^Hostname'
+        line: "Hostname: {{ ansible_hostname | default('NONE') }}"
+
+    - name: Set BIOS version
+      lineinfile:
+        path: /root/hwreport.txt
+        regexp: '^Biosversion'
+        line: "Biosversion: {{ ansible_bios_version | default('NONE') }}"
+
+    - name: Set memory
+      lineinfile:
+        path: /root/hwreport.txt
+        regexp: '^Memory'
+        line: "Memory: {{ ansible_memtotal_mb | default('NONE') }}"
+
+    - name: Set nvme0n1 size
+      lineinfile:
+        path: /root/hwreport.txt
+        regexp: '^nvme0n1p3'
+        line: "nvme0n1p3 size: {{ ansible_devices.nvme0n1p3.size | default('NONE') }}"
+
+    - name: Set nvme0n2 size
+      lineinfile:
+        path: /root/hwreport.txt
+        regexp: '^nvme0n1p4'
+        line: "nvme0n1p4 size: {{ ansible_devices.nvme0n1p4.size | default('NONE') }}"
+

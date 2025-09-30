@@ -1,0 +1,14 @@
+- name: Cron job Playbook
+  hosts: all
+  tasks:
+    - name: Creating A user natasha
+      user:
+        name: natasha
+        state: present
+
+    - name: creating a cron job for natasha
+      cron:
+        name: cronjob for natasha
+        minute: "*/2"
+        job: 'logger "EX294 exam in progress"'
+        user: natasha

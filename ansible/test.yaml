@@ -1,0 +1,26 @@
+- name: Creating a web content Directory
+  hosts: test
+  tasks:
+    - name: creating a directory webdev
+      file:
+        path: /webdev 
+        state: directory
+        group: apache
+        setype: httpd_sys_content_t
+        mode: "2775" 
+
+    - name: Creating a Symbolik Link
+      file:
+        src: /webdev
+        path: /var/www/html/webdev
+        state: link
+        setype: httpd_sys_content_t
+    
+    - name: Creating a index.html in webdev
+      copy:
+        dest: /webdev/index.html
+        mode: "0640"
+        content: "Development"
+        group: apache
+        setype: httpd_sys_content_t
+      

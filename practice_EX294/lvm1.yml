@@ -1,0 +1,32 @@
+- name: LVM Playbook
+  hosts: all
+  tasks:
+    - name: Checking the details
+      block:
+        - name: If Volume group does not exist then prompt a message
+          debug:
+            msg: "volume group does not exist"
+          when: "'research' not in ansible_lvm.vgs"
+        - name: Create a logical volume of 1200m
+          lvol:
+            vg: research
+            lv: data
+            size: "512m"
+          when: "'research' in ansible_lvm.vgs"
+      rescue:
+        - name: If a logical volume size cannot be created, the error message will be Prompted
+          debug:
+            msg: "could not create logical volume of that size"
+        - name: Create a logical volume of 800m
+          lvol:
+            vg: research
+            lv: data
+            size: "800m"
+      always:
+        - name: Create a ext4 filesystem
+          filesystem:
+          fstype: ex4
+          dev: /dev/research/data
+          when: "'research' in ansible_lvm.lvs and 'data' in ansible_lvm.lvs['research']"
+          
+

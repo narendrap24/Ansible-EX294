@@ -1,0 +1,35 @@
+- name: User creation Playbook
+  hosts: dev,test
+  vars_files: 
+    - ~/ansible/user_list.yaml
+    - ~/ansible/vault.yaml
+  tasks:
+    - name: Group creation
+      group:
+        name: capgemini
+        state: present
+    - name: Creating Developer profile users
+      user:
+        name: "{{ item.name }}"
+        uid: "{{ item.uid }}"
+        groups: capgemini
+        password: "{{ dev_pass | password_hash('sha512')  }}"
+      when: item.job == "developer"
+
+- name: User creation Playbook
+  hosts: prod
+  vars_files: 
+    - ~/ansible/user_list.yaml
+    - ~/ansible/vault.yaml
+  tasks:
+    - name: Group creation
+      group:
+        name: pvg
+        state: present
+    - name: Creating Developer profile users
+      user:
+        name: "{{ item.name }}"
+        uid: "{{ item.uid }}"
+        groups: pvg
+        password: "{{ mgr_pass | password_hash('sha512')  }}"
+      when: item.job == "manager"

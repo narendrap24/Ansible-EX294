@@ -1,0 +1,9 @@
+- name: Manage timesync with 1 server
+  hosts: test
+  vars:
+    timesync_ntp_servers:
+      - hostname: 172.25.254.254
+        iburst: true
+    timesync_ntp_provider: chrony
+  roles:
+    - rhel-system-roles.timesync

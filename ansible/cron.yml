@@ -1,0 +1,14 @@
+- name: Configuring a Cron job
+  hosts: all
+  tasks: 
+    - name: creating a user natasha
+      user:
+          name: natasha
+          state: present
+
+    - name: Cron job for user natasha
+      cron:
+        minute: '*/2'
+        user: natasha
+        job: "logger 'Ex294 exam in progress'"
+        name: Cronjob for natasha

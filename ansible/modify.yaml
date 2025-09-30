@@ -1,0 +1,20 @@
+- name: Modifying content on /etc/issue file
+  hosts: all
+  tasks:
+    - name: Replacing content of /etc/issue in dev group
+      copy:
+        content: "Development"
+        dest: /etc/issue
+      when: inventory_hostname in groups['dev']
+    - name: Replacing content of /etc/issue in test group
+      copy:
+        content: "Test"
+        dest: /etc/issue
+      when: inventory_hostname in groups['test']
+    - name: Replacing content of /etc/issue in prod group
+      copy:
+        content: "Production"
+        dest: /etc/issue
+      when: inventory_hostname in groups['prod']
+
+

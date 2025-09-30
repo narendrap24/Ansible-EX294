@@ -1,0 +1,11 @@
+[dev]
+172.31.123.82   #node1
+[test]
+172.31.121.236  #node2
+[prod]
+172.31.119.66   #node3
+172.31.115.119  #node4
+[balancers]
+172.31.125.251  #node5
+[webservers:children]
+prod

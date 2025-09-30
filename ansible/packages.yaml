@@ -1,0 +1,24 @@
+- name: Package Installation
+  hosts: dev,test,prod
+  tasks:
+    - name: Installing PHP & Mariadb 
+      yum:  
+        name:
+          - mariadb
+          - php
+        state: present
+- name: Package Installation
+  hosts: dev
+  tasks:
+    - name: Installing RPM Tools
+      yum:  
+        name: "@RPM Development tools"
+        state: present
+- name: Packages Upgradation
+  hosts: dev
+  tasks:
+    - name: Updrating all packages
+      dnf:  
+        name: "*"
+        state: latest
+

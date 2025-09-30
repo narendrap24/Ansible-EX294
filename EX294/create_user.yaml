@@ -1,0 +1,40 @@
+- name: Users and groups Management playbook
+  hosts: test,dev
+  vars_files:
+      - /home/john/ansible/user_list.yaml
+      - /home/john/ansible/vault.yaml
+  tasks:
+    - name: Creating a devops group
+      group:
+        name: devops
+        state: present
+    
+    - name: Creating Developer profile users
+      user:
+        name: "{{ item.name }}"
+        uid: "{{ item.uid }}"
+        groups: devops
+        state: present
+        password: "{{ dev_pass | password_hash('sha512') }}"
+      when: item.job == "developer"
+      loop: "{{ users }}"
+
+- hosts: prod
+  vars_files:
+      - /home/john/ansible/user_list.yaml
+      - /home/john/ansible/vault.yaml
+  tasks:
+    - name: Creating a opsmgr group
+      group:
+        name: opsmgr
+        state: present
+
+    - name: Creating Developer profile users
+      user:
+        name: "{{ item.name }}"
+        uid: "{{ item.uid }}"
+        groups: opsmgr
+        state: present
+        password: "{{ mgr_pass | password_hash('sha512') }}"
+      when: item.job == "manager"
+      loop: "{{ users }}"  

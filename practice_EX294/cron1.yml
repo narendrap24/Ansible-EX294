@@ -1,0 +1,13 @@
+ - name: Cron job Configuration
+   hosts: all
+   tasks:
+    - name: Creating a paul user
+      user:
+        name: paul
+        state: present
+    - name: Creating a job for user paul
+      cron:
+        name: yum autoupdate
+        minute: "*/2"
+        user: paul
+        job: "logger 'EX294 exam is in progress'"

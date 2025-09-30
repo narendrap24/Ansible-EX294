@@ -1,0 +1,12 @@
+- hosts: all
+  tasks:
+   - name: Getting the facts locally
+     setup:
+
+- name: Creating a file using a template
+  hosts: dev
+  tasks:
+   - name: Creating a myhosts file under /etc
+     template:
+        src: /home/john/ansible/myhosts.j2
+        dest: /etc/myhosts

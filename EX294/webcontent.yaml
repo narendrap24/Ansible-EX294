@@ -1,0 +1,29 @@
+- name: creating a web content directory
+  hosts: test
+  tasks:
+        - name: creating webdev group
+          group:
+            name: webdev
+            state: present
+        - name: creating the directory /webdev
+          file:
+            path: /webdev
+            state: directory
+            group: apache
+            mode: "2775"
+            setype: httpd_sys_content_t
+            
+        - name: creating the /webdev dir symboliclink
+          file:
+            src: /webdev
+            path: /var/www/html/webdev
+            state: link
+            setype: httpd_sys_content_t
+            
+        - name: Creating the index file
+          copy:
+            dest: /webdev/index.html
+            mode: 0640
+            group: apache
+            content: "Development"
+            setype: httpd_sys_content_t

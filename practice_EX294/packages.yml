@@ -1,0 +1,24 @@
+- name: Installing the PHP and mariadb packages
+  hosts: dev,test,prod
+  tasks: 
+    - name: Installation is in progress
+      dnf:
+        name:
+          - mariadb
+          - php
+        state: present
+- name: Installing Development tools 
+  hosts: dev
+  tasks: 
+    - name: Installation is in progress
+      dnf:
+        name: "@RPM Development tools"
+        state: latest
+- name: Updating all packages on the dev group
+  hosts: dev
+  tasks: 
+    - name: Upgradation is in progress...
+      dnf:
+        name: "*"
+        state: latest      
+

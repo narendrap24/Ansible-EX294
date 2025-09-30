@@ -1,0 +1,34 @@
+- name: Generating a HW report
+  hosts: all
+  tasks:
+      - name: Downloading the report from given url & saving it under /root
+        get_url:
+          url: https://example.com
+          dest: /root/hwreport.txt
+      
+      - name: Getting the inventory hostname
+        lineinfile:
+          path: /root/hwreport.txt
+          regexp: '^Hostname'
+          line: Hostname: {{ ansible_hostname | default('NONE') }}
+      - name: Getting the Bios version
+        lineinfile:
+          path: /root/hwreport.txt
+          regexp: '^Biosversion'
+          line: Biosversion: {{ ansible_bios_version | default('NONE') }}
+      - name: Getting the host memory
+        lineinfile:
+          path: /root/hwreport.txt
+          regexp: '^Memory'
+          line: Memory: {{ ansible_memtotal_mb | default('NONE') }}
+      - name: Getting the vda disk size
+        lineinfile:
+          path: /root/hwreport.txt
+          regexp: '^vda'
+          line: vda size: {{ ansible_devices.vda.size | default('NONE') }}
+      - name: Getting the vdb disk size
+        lineinfile:
+          path: /root/hwreport.txt
+          regexp: '^vdb'
+          line: vdb size: {{ ansible_devices.vdb.size | default('NONE') }}
+        

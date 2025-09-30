@@ -1,0 +1,6 @@
+ pkg: 
+    - httpd
+    - firewalld
+ rule:
+    - http
+    - https

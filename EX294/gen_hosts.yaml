@@ -1,0 +1,13 @@
+- hosts: all
+  gather_facts: yes
+  tasks:
+    - name: Register facts centrally
+      setup:
+
+- hosts: dev
+  tasks:
+    - name: Render full /etc/myhosts
+      template:
+        src: "/home/john/ansible/hosts.j2"
+        dest: "/etc/myhosts"
+

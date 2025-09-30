@@ -1,0 +1,10 @@
+- src: https://galaxy.ansible.com/download/zabbix-zabbix-1.0.6.tar.gz
+  name: zabbix
+- src: https://galaxy.ansible.com/download/openafs_contrib-openafs-1.9.0.tar.gz
+  name: security
+- src: https://galaxy.ansible.com/download/mafalb-squid-0.2.0.tar.gz
+  name: squid
+- src: http://sandbox:/mnt/data/balancer_role.tar.gz
+  name: balancer
+- src: http://sandbox:/mnt/data/phphello_role.tar.gz
+  name: phphello
